@@ -12,6 +12,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jwebunit.version>3.1</jwebunit.version>
   </properties>
 
   <build>
@@ -59,7 +60,19 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>1.9.0</version>
+      <version>1.9.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.jwebunit</groupId>
+      <artifactId>jwebunit-core</artifactId>
+      <version>${jwebunit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.jwebunit</groupId>
+      <artifactId>jwebunit-htmlunit-plugin</artifactId>
+      <version>${jwebunit.version}</version>
       <scope>test</scope>
     </dependency>
 
@@ -67,7 +80,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>13.0.1</version>
+      <version>14.0-rc1</version>
     </dependency>
     <dependency>
       <groupId>net.gageot</groupId>
