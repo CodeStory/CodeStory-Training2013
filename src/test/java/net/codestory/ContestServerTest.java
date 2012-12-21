@@ -15,6 +15,6 @@ public class ContestServerTest extends WebTester {
 
     beginAt("/");
 
-    assertTextPresent("Welcome");
+    assertTextPresent("Welcome to the 2013 Code-Story Context");
   }
 }

@@ -1,9 +1,11 @@
 package net.codestory;
 
+import com.google.common.io.Files;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
@@ -12,9 +14,8 @@ public class ContestServer implements HttpHandler {
 
   @Override
   public void handle(HttpExchange exchange) throws IOException {
-    String body = "Welcome";
+    byte[] response = Files.toByteArray(new File("web/index.html"));
 
-    byte[] response = body.getBytes();
     exchange.sendResponseHeaders(200, response.length);
     exchange.getResponseBody().write(response);
     exchange.close();
