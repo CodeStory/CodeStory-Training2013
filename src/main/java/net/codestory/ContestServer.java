@@ -14,7 +14,16 @@ public class ContestServer implements HttpHandler {
 
   @Override
   public void handle(HttpExchange exchange) throws IOException {
-    byte[] response = Files.toByteArray(new File("web/index.html"));
+    String path = exchange.getRequestURI().getPath();
+
+    System.out.println(path);
+
+    byte[] response;
+    if (path.equals("/faq")) {
+      response = Files.toByteArray(new File("web/faq.html"));
+    } else {
+      response = Files.toByteArray(new File("web/index.html"));
+    }
 
     exchange.sendResponseHeaders(200, response.length);
     exchange.getResponseBody().write(response);
