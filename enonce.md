@@ -1,7 +1,7 @@
 L’échoppe de monade sur Scalaskel.
 ==============
 
-Sur la planète Scalaskel, une planète en marge de la galaxie, aux confins de l'univers, la monnaie se compte en cents, comme chez nous. 100 cents font un groDessimal. Le groDessimal est la monnaie standard utilisable partout sur toutes les planètes de l’univers connu. C'est un peu compliqué à manipuler, mais si on ne s'en sert pas y'a toujours des erreurs d'arrondis incroyables quand on les soustrais ou on les divise, c’est idiot, mais c’est comme ça.  Sur Scalaskel, on utilise rarement des groDessimaux, on utilise des pièces plus petites : Le **Foo** vaut **1 cent**, le **Bar** vaut **7 cents**, le **Qix** vaut **11 cents** et le **Baz** vaut **17 cents**.
+Sur la planète Scalaskel, une planète en marge de la galaxie, aux confins de l'univers, la monnaie se compte en cents, comme chez nous. 100 cents font un groDessimal. Le groDessimal est la monnaie standard utilisable partout sur toutes les planètes de l’univers connu. C'est un peu compliqué à manipuler, mais si on ne s'en sert pas y'a toujours des erreurs d'arrondis incroyables quand on les soustrais ou on les divise, c’est idiot, mais c’est comme ça.  Sur Scalaskel, on utilise rarement des groDessimaux, on utilise des pièces plus petites : Le **Foo** vaut **1 cent**, le **Bar** vaut **7 cents**, le **Qix** vaut **11 cents** et le **Baz** vaut **21 cents**.
 
 Vous tenez une échoppe de monade et autres variables méta-syntaxique sur Scalaskel. Pour faire face à l’afflux de touristes étrangers avec les poches remplies de groDessimaux vous avez besoin d’écrire un programme qui pour toute somme de 1 à 100 cents, vous donnera toutes les décompositions possibles en pièces de **Foo**, **Bar**, **Qix** ou **Baz**.
 
