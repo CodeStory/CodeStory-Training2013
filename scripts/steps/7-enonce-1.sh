@@ -20,4 +20,7 @@ if [ ! -s "logins/$LOGIN/enonce-1" ]; then
 	if [[ $RESPONSE =~ ^201$ ]]; then
 		echo $RESPONSE > logins/$LOGIN/enonce-1
 	fi
+	if [[ $RESPONSE =~ ^200$ ]]; then
+		echo $RESPONSE > logins/$LOGIN/enonce-1
+	fi
 fi
