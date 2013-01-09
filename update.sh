@@ -3,5 +3,5 @@
 # Envoi des requetes aux participants
 #
 
-./scripts/logins.sh | parallel ./scripts/all_steps.sh {}
+./scripts/logins.sh | xargs -P 8 -I {} ./scripts/all_steps.sh {}
 ./recap.sh
