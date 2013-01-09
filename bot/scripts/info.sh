@@ -12,5 +12,6 @@ TYPE=$(fichier 'type')
 MAILING=$(fichier 'mailing')
 MOOD=$(fichier 'mood')
 POST_READY=$(fichier 'post-ready')
+TOUJOURS_OUI=$(fichier 'toujours-oui')
 
-echo -e "$LOGIN;[$SERVER];[$EMAIL];[$TYPE];[$MAILING];[$MOOD];[$POST_READY]"
+echo -e "$LOGIN;[$SERVER];[$EMAIL];[$TYPE];[$MAILING];[$MOOD];[$POST_READY];[$TOUJOURS_OUI]"
