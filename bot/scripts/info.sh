@@ -7,7 +7,7 @@ if [ -z $LOGIN ]; then
 fi
 
 function fichier() {
-	echo $(cat logins/$LOGIN/$1 2> /dev/null || echo UNKNOWN)
+	echo $(cat logins/$LOGIN/$1 2> /dev/null || echo ?)
 }
 
 SERVER=$(fichier 'server')
@@ -17,5 +17,7 @@ MAILING=$(fichier 'mailing')
 MOOD=$(fichier 'mood')
 POST_READY=$(fichier 'post-ready')
 TOUJOURS_OUI=$(fichier 'toujours-oui')
+ENONCE_1=$(fichier 'enonce-1')
+ACK_ENONCE_1=$(fichier 'ack-enonce-1')
 
-echo -e "$LOGIN;[$SERVER];[$EMAIL];[$TYPE];[$MAILING];[$MOOD];[$POST_READY];[$TOUJOURS_OUI]"
+echo -e "$LOGIN;[$EMAIL];[$TYPE];[$MAILING];[$MOOD];[$POST_READY];[$TOUJOURS_OUI];[$ENONCE_1];[$ACK_ENONCE_1]"
