@@ -1,6 +1,10 @@
 #!/bin/bash
 
 LOGIN=$1
+if [ -z $LOGIN ]; then
+	echo "Please provide a login"
+	exit 1
+fi
 
 function fichier() {
 	echo $(cat logins/$LOGIN/$1 2> /dev/null || echo UNKNOWN)
