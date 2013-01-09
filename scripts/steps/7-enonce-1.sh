@@ -15,7 +15,7 @@ if [ ! -s "logins/$LOGIN/enonce-1" ]; then
 
 	SERVER=$(cat logins/$LOGIN/server)
 	URL="${SERVER}enonce/1"
-	RESPONSE=$(curl -sL --data-binary @enonces/1.md -w "%{http_code}" $URL)
+	RESPONSE=$(curl -o /dev/null -sL --data-binary @enonces/1.md -w "%{http_code}" $URL)
 
 	if [[ $RESPONSE =~ ^201$ ]]; then
 		echo $RESPONSE > logins/$LOGIN/enonce-1

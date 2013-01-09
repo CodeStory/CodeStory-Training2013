@@ -25,7 +25,8 @@ public class Scalaskel {
   public static final int BAZ = 21;
 
   public String json(int cents) {
-    return toJson(combinations(cents));
+    List<List<Integer>> combinations = combinations(cents);
+    return toJson(toCombinations(toJson(combinations)));
   }
 
   public static class FooBarQixBaz implements Comparable<FooBarQixBaz> {
@@ -111,6 +112,12 @@ public class Scalaskel {
     try {
       String expected = new Scalaskel().json(cents);
       String actual = toJson(toCombinations(json));
+
+      if (args.length > 2) {
+        System.out.println(expected);
+        System.out.println(actual);
+        System.out.println(expected.equals(actual));
+      }
 
       if (expected.equals(actual)) {
         System.out.println("OK");

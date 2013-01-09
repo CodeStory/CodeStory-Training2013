@@ -123,6 +123,7 @@ public class ScalaskelTest {
   }
 
   static List<List<Integer>> toCombinations(String json) {
+    System.out.println(json);
     return Scalaskel.toCombinations(json);
   }
 }
