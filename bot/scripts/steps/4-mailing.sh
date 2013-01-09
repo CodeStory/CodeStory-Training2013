@@ -1,19 +1,23 @@
 #!/bin/bash
 
 LOGIN=$1
+if [ -z $LOGIN ]; then
+	echo "Please provide a login"
+	exit 1
+fi
 
 if [ ! -e "logins/$LOGIN/email" ]; then
 	exit 0
 fi
 
 if [ ! -s "logins/$LOGIN/mailing" ]; then
-	echo "Retrieve mailing list state for $LOGIN"
+	echo "GET mailing for $LOGIN"
 
 	SERVER=$(cat logins/$LOGIN/server)
 	URL="$SERVER?q=Es+tu+abonne+a+la+mailing+list(OUI/NON)"
-	EMAIL=$(curl -s "$URL" | tr -d '\n\r')
+	RESPONSE=$(curl -Ls "$URL" | tr -d '\n\r')
 
-	if [[ $EMAIL =~ ^OUI$ ]]; then
-		echo $EMAIL > logins/$LOGIN/mailing
+	if [[ $RESPONSE =~ ^OUI$ ]]; then
+		echo $RESPONSE > logins/$LOGIN/mailing
 	fi
 fi
