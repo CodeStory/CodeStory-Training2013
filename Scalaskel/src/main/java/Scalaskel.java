@@ -22,7 +22,7 @@ public class Scalaskel {
   public static final int FOO = 1;
   public static final int BAR = 7;
   public static final int QIX = 11;
-  public static final int BAZ = 17;
+  public static final int BAZ = 21;
 
   public String json(int cents) {
     return toJson(combinations(cents));

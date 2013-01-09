@@ -10,7 +10,7 @@ public class ScalaskelTest {
 
   @Test
   public void should_change_for_1_cent() {
-    List<List<Integer>> combinations = toCombinations(1, scalaskel.json(1));
+    List<List<Integer>> combinations = toCombinations(scalaskel.json(1));
 
     assertThat(combinations).containsOnly(
       coins(1)
@@ -19,7 +19,7 @@ public class ScalaskelTest {
 
   @Test
   public void should_change_for_2_cent2() {
-    List<List<Integer>> combinations = toCombinations(2, scalaskel.json(2));
+    List<List<Integer>> combinations = toCombinations(scalaskel.json(2));
 
     assertThat(combinations).containsOnly(
       coins(1, 1)
@@ -28,7 +28,7 @@ public class ScalaskelTest {
 
   @Test
   public void should_change_for_7_cents() {
-    List<List<Integer>> combinations = toCombinations(7, scalaskel.json(7));
+    List<List<Integer>> combinations = toCombinations(scalaskel.json(7));
 
     assertThat(combinations).containsOnly(
       coins(7),
@@ -38,7 +38,7 @@ public class ScalaskelTest {
 
   @Test
   public void should_change_for_8_cents() {
-    List<List<Integer>> combinations = toCombinations(8, scalaskel.json(8));
+    List<List<Integer>> combinations = toCombinations(scalaskel.json(8));
 
     assertThat(combinations).containsOnly(
       coins(7, 1),
@@ -48,7 +48,7 @@ public class ScalaskelTest {
 
   @Test
   public void should_change_for_11_cents() {
-    List<List<Integer>> combinations = toCombinations(11, scalaskel.json(11));
+    List<List<Integer>> combinations = toCombinations(scalaskel.json(11));
 
     assertThat(combinations).containsOnly(
       coins(11),
@@ -59,10 +59,9 @@ public class ScalaskelTest {
 
   @Test
   public void should_change_for_19_cents() {
-    List<List<Integer>> combinations = toCombinations(19, scalaskel.json(19));
+    List<List<Integer>> combinations = toCombinations(scalaskel.json(19));
 
     assertThat(combinations).containsOnly(
-      coins(17, 1, 1),
       coins(11, 7, 1),
       coins(11, 1, 1, 1, 1, 1, 1, 1, 1),
       coins(7, 7, 1, 1, 1, 1, 1),
@@ -73,10 +72,10 @@ public class ScalaskelTest {
 
   @Test
   public void should_change_for_21_cents() {
-    List<List<Integer>> combinations = toCombinations(21, scalaskel.json(21));
+    List<List<Integer>> combinations = toCombinations(scalaskel.json(21));
 
     assertThat(combinations).containsOnly(
-      coins(17, 1, 1, 1, 1),
+      coins(21),
       coins(11, 7, 1, 1, 1),
       coins(11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
       coins(7, 7, 7),
@@ -88,12 +87,11 @@ public class ScalaskelTest {
 
   @Test
   public void should_change_for_28_cents() {
-    List<List<Integer>> combinations = toCombinations(28, scalaskel.json(28));
+    List<List<Integer>> combinations = toCombinations(scalaskel.json(28));
 
     assertThat(combinations).containsOnly(
-      coins(17, 11),
-      coins(17, 7, 1, 1, 1, 1),
-      coins(17, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+      coins(21, 7),
+      coins(21, 1, 1, 1, 1, 1, 1, 1),
       coins(11, 11, 1, 1, 1, 1, 1, 1),
       coins(11, 7, 7, 1, 1, 1),
       coins(11, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -108,14 +106,14 @@ public class ScalaskelTest {
 
   @Test
   public void should_change_for_42_cents() {
-    List<List<Integer>> combinations = toCombinations(42, scalaskel.json(42));
+    List<List<Integer>> combinations = toCombinations(scalaskel.json(42));
 
     assertThat(combinations).isNotEmpty();
   }
 
   @Test
   public void should_change_for_97_cents() {
-    List<List<Integer>> combinations = toCombinations(97, scalaskel.json(97));
+    List<List<Integer>> combinations = toCombinations(scalaskel.json(97));
 
     assertThat(combinations).isNotEmpty();
   }
@@ -124,7 +122,7 @@ public class ScalaskelTest {
     return Ints.asList(coins);
   }
 
-  static List<List<Integer>> toCombinations(int cents, String json) {
+  static List<List<Integer>> toCombinations(String json) {
     return Scalaskel.toCombinations(json);
   }
 }
