@@ -6,9 +6,8 @@ if [ -z $LOGIN ]; then
 	exit 1
 fi
 
-#STEPS=$(ruby -e 'Dir["scripts/steps/*"].map {|x| File.basename(x).chomp(".sh")}.sort.each {|x| puts(x)}')
-STEPS=$(ruby -e 'Dir["scripts/steps/*"].map {|x| File.basename(x)}.sort.each {|x| puts(x)}')
+STEPS=$(./scripts/steps.sh)
 for STEP in $STEPS; do
-	SCRIPT=./scripts/steps/$STEP
+	SCRIPT=./scripts/steps/$STEP.sh
 	$SCRIPT $LOGIN
 done
