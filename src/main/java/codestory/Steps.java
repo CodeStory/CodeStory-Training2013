@@ -16,6 +16,13 @@ class Steps implements Iterable<Step> {
         }
     }
 
+    Steps(final String... steps) {
+        this.steps = new TreeSet<>();
+        for (Integer i = 0; i < steps.length; i++) {
+            this.steps.add(new Step(i, steps[i]));
+        }
+    }
+
     @Override
     public Iterator<Step> iterator() {
         return steps.iterator();

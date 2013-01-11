@@ -1,37 +1,52 @@
 package codestory;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 
-class Logins {
+class Logins implements Iterable<Login> {
 
-    private final Map<String, List<String>> stepsBylogins;
+    private final Map<Login, List<String>> stepsBylogins;
 
-    Logins(final File directory) {
+    private final Set<Login> logins;
+
+    Logins() {
         stepsBylogins = new HashMap<>();
-        for (final File loginAsFile : directory.listFiles(pathname -> pathname.isDirectory())) {
-            stepsBylogins.put(loginAsFile.getName(), asList(loginAsFile.list()));
-        }
+        logins = new HashSet<>();
     }
 
-    Map<String, Integer> getScores(final Steps steps) {
-        final Map<String, Integer> scores = new HashMap<>();
+    Logins update(final Date date, final File directory, final Steps steps) {
+        for (final File loginAsFile : directory.listFiles(pathname -> pathname.isDirectory())) {
+            logins.add(new Login(loginAsFile.getName()));
+            stepsBylogins.put(login(loginAsFile.getName()), asList(loginAsFile.list()));
+        }
 
-        for (final Map.Entry<String, List<String>> stepsByLogin : stepsBylogins.entrySet()) {
+        for (final Map.Entry<Login, List<String>> stepsByLogin : stepsBylogins.entrySet()) {
             Integer score = 0;
             for (final Step step : steps) {
                 if (stepsByLogin.getValue().contains(step.name())) {
                     score++;
                 }
             }
-            scores.put(stepsByLogin.getKey(), score);
+            stepsByLogin.getKey().setScore(date, score);
         }
 
-        return scores;
+        return this;
+    }
+
+    Login login(final String loginName) {
+        for (final Login login : logins) {
+            if (login.name().equals(loginName)) {
+                return login;
+            }
+        }
+        throw new NoSuchElementException();
+    }
+
+    @Override
+    public Iterator<Login> iterator() {
+        return logins.iterator();
     }
 
 }
