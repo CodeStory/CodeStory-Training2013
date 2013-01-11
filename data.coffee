@@ -20,7 +20,7 @@ fs.readdir './logins', (err,files) ->
 			emailHash = crypto.createHash('md5').update(email).digest("hex") if email?
 			type = readLine "./logins/#{file}/type"
 			player = new Player file, level
-			player.gravatar = "http://www.gravatar.com/avatar/#{emailHash}" if emailHash?
+			player.gravatar = "http://www.gravatar.com/avatar/#{emailHash}/?s=64" if email?
 			player.type = type if type?
 			players.push player
 	console.log JSON.stringify players
