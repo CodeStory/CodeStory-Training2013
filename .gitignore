@@ -4,4 +4,4 @@ target/
 .DS_Store
 prod.log
 data/
-index.html
+data.json

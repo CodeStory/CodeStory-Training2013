@@ -1,1 +1,3 @@
-coffee data.coffee | jsonpp
+#!/bin/bash
+
+coffee data.coffee | jsonpp > data.json
