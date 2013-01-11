@@ -6,9 +6,9 @@ if [ -z $LOGIN ]; then
 	exit 1
 fi
 
-#if [ ! -e "logins/$LOGIN/scalaskel-all" ]; then
-#	exit 0
-#fi
+if [ ! -e "logins/$LOGIN/scalaskel-all" ]; then
+	exit 0
+fi
 
 if [ ! -s "logins/$LOGIN/calcul" ]; then
 	echo "GET calcul for $LOGIN"
