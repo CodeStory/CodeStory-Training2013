@@ -23,4 +23,4 @@ fs.readdir './logins', (err,files) ->
 			player.gravatar = "http://www.gravatar.com/avatar/#{emailHash}" if emailHash?
 			player.type = type if type?
 			players.push player
-		console.log JSON.stringify players
+	console.log JSON.stringify players
