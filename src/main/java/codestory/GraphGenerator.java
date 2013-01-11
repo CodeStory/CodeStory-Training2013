@@ -14,21 +14,26 @@ import static java.io.File.separator;
 import static java.io.File.separatorChar;
 import static java.lang.String.format;
 import static java.lang.System.exit;
-import static java.util.Collections.unmodifiableMap;
+import static java.util.Collections.unmodifiableSortedMap;
 
 public class GraphGenerator {
 
-    public Map<String, Integer> getScores(final File directory) {
-        final Map<String, Integer> scores = new HashMap<>();
-
+    public SortedMap<String, Integer> getScores(final File directory) {
         final Steps steps = new Steps(new File(directory, "scripts" + separatorChar + "steps"));
         final Logins logins = new Logins().update(new Date(), new File(directory, "logins"), steps);
+
+        final SortedMap<String, Integer> scores = new TreeMap<String, Integer>((loginName1, loginName2) -> {
+            final Integer score1 = logins.login(loginName1).score();
+            final Integer score2 = logins.login(loginName2).score();
+
+            return score2.compareTo(score1);
+        });
 
         for (Login login : logins) {
             scores.put(login.name(), login.score());
         }
 
-        return unmodifiableMap(scores);
+        return unmodifiableSortedMap(scores);
     }
 
     public Set<String> commits(final File gitDir) {
