@@ -14,14 +14,13 @@ readLine = (file) ->
 players = []
 fs.readdir './logins', (err,files) ->
 	for file in files
-		level = fs.readdirSync("./logins/#{file}").length
-		email = readLine "./logins/#{file}/email"
-		emailHash = crypto.createHash('md5').update(email).digest("hex") if email?
-		type = readLine "./logins/#{file}/type"
-		player = new Player file, level
-		player.gravatar = "http://www.gravatar.com/avatar/#{emailHash}" if emailHash?
-		player.type = type if type?
-		players.push player
-	console.log JSON.stringify players
-
-		
+		if (file != '.DS_Store')
+			level = fs.readdirSync("./logins/#{file}").length
+			email = readLine "./logins/#{file}/email"
+			emailHash = crypto.createHash('md5').update(email).digest("hex") if email?
+			type = readLine "./logins/#{file}/type"
+			player = new Player file, level
+			player.gravatar = "http://www.gravatar.com/avatar/#{emailHash}" if emailHash?
+			player.type = type if type?
+			players.push player
+			console.log JSON.stringify players

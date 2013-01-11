@@ -1,1 +1,1 @@
-coffee data.coffee | jsonlint
+coffee data.coffee | jsonpp
