@@ -10,11 +10,6 @@ if [ ! -e "logins/$LOGIN/ack-enonce-2" ]; then
 	exit 0
 fi
 
-# TEMP
-if [ ! -e "logins/$LOGIN/beta" ]; then
-	exit 0
-fi
-
 if [ ! -s "logins/$LOGIN/jajascript-1" ]; then
 	echo "POST jajascript-1 for $LOGIN"
 
