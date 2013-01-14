@@ -44,11 +44,4 @@ generator = (number,seed, trips) ->
 	seed = seed + 5
 	generator number, seed, trips if number > 0
 
-trips = []
-generator(30,0,trips)
-console.log trip.toString() for trip in trips
-#console.log JSON.stringify trips
-
-console.log "   ANSWER   "
-console.log new lags.TripOptimizer(trips.join("\n")).optimize()
-
+module.exports.generator = generator
