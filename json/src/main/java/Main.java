@@ -26,7 +26,7 @@ public class Main {
       if (new File(file, "email").exists()) {
         String email = Files.readFirstLine(new File(file, "email"), Charsets.UTF_8);
         String hash = Hashing.md5().hashString(email, Charsets.UTF_8).toString();
-        gravatar = "http://www.gravatar.com/avatar/" + hash + "/?s=64";
+        gravatar = "http://www.gravatar.com/avatar/" + hash + "?s=64";
       }
 
       participants.add(new Participant(login, level, time, gravatar));
