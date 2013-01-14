@@ -1,3 +1,16 @@
+### stripgain
+
+#### goal
+Strip gain and output it as plain text
+
+#### usage
+
+	echo "{\"gain\":34,\"polka\":43}" | coffee stripgain.coffee
+
+will output
+
+	34
+
 ### simple-generator
 
 #### goal
@@ -16,6 +29,25 @@ will output on stdout
 ##### Details
 * as of now, this generator will not produce more than 40 trips, so 8 is the max value.
 * default value if no arguments are given is 3 so 15 trips
+
+
+### check.coffee
+
+#### goal
+check.coffee takes :
+* the answer of the player as a argv
+* the question in json in stdin
+compute the answer to the question, check it with the supplied answer from the player and output `OK or KO`
+
+#### usage
+
+	cat somequestion.json | coffee check.coffee 42
+
+somequestion.json contains something like
+
+	{"name":"quiet-clothing-45","start":0,"length":4,"price":8},{"name":"eager-curb-78","start":1,"length":2,"price":5},{"name":"happy-cheekbone-16","start":2,"length":6,"price":4},{"name":"proud-schoolgirl-17","start":4,"length":5,"price":18},{"name":"plain-obesity-30","start":5,"length":2,"price":16}]
+
+
 
 
 ### lags-answers
