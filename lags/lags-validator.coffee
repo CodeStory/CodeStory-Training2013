@@ -1,26 +1,6 @@
 # takes a question number as unique argument ; reads response from standard input and produces OK or KO
 
-class TripOptimizer
-	constructor : (lines) ->
-		@trips = (new Trip(line) for line in lines.split '\n')
-
-	optimize : (trips) ->
-		return @optimize(@trips) unless trips?
-		return 0 if trips.length == 0
-		currentTrip = trips[0]
-		nonOverlappingTrips = trips[1..].filter (trip) -> not currentTrip.overlap trip
-		currentGain = currentTrip.gain + @optimize nonOverlappingTrips
-		return Math.max currentGain, @optimize trips[1..]
-
-
-class Trip
-	constructor : (description) ->
-		splittedDescription = description.split(' ')
-		@name = splittedDescription[0]
-		[@takeOffTime, @duration, @gain] = (+line for line in splittedDescription[1..])
-
-	overlap : (trip) ->
-		@takeOffTime + @duration > trip.takeOffTime && trip.takeOffTime + trip.duration > @takeOffTime
+lags = require './lags.coffee'
 
 questions = [
 	'AF514 0 5 10',
@@ -32,7 +12,7 @@ questions = [
 	'MONAD42 0 5 10\nMETA18 3 7 14\nLEGACY01 5 9 8\nYAGNI17 5 9 7'
 ]
 
-bestGain = new TripOptimizer(questions[process.argv[2] - 1]).optimize()
+bestGain = new lags.TripOptimizer(questions[process.argv[2] - 1]).optimize()
 
 stdin = process.openStdin()
 stdin.setEncoding 'utf8'
