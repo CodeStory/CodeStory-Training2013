@@ -6,7 +6,7 @@ if [ -z $LOGIN ]; then
 	exit 1
 fi
 
-if [ ! -e "logins/$LOGIN/mood" ]; then
+if [ ! -e "logins/$LOGIN/mailing" ]; then
 	exit 0
 fi
 
