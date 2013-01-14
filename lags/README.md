@@ -1,51 +1,55 @@
-## Kata Lags
+### simple-generator
+
+#### goal
+Generate simple question (< 40 trips) to be sent to players
+
+#### usage
+
+Generating a 10 trips file (2 is the number of iterations, each iteration is of 5 trips)
+
+	coffee simple-generator.coffee 2
+
+will output on stdout
+
+	[{"name":"alive-transportation-61","start":0,"length":4,"price":11},{"name":"little-vegan-95","start":1,"length":2,"price":4},{"name":"cooperative-sculptor-10","start":2,"length":6,"price":7},{"name":"cruel-coal-54","start":4,"length":5,"price":19},{"name":"rich-shoeshine-42","start":5,"length":2,"price":28},{"name":"ancient-jar-40","start":5,"length":4,"price":7},{"name":"ancient-image-25","start":6,"length":2,"price":6},{"name":"large-eggshell-78","start":7,"length":6,"price":5},{"name":"careful-against-7","start":9,"length":5,"price":12},{"name":"perfect-flame-78","start":10,"length":2,"price":24}]
+
+##### Details
+* as of now, this generator will not produce more than 40 trips, so 8 is the max value.
+* default value if no arguments are given is 3 so 15 trips
 
 
-source :
-http://wiki.agile-france.org/cgi-bin/wiki.pl?DojoDeveloppement/LouezVotreAvionEtGagnezDesSous
+### lags-answers
 
+#### goal
+the lags-answers.coffee does the same thing as the script, but compute the answer and calculate the time it took to answer it.
 
-## Enoncé
+#### usage
 
-ABEAS Corp est une toute petite entreprise qui possède un seul avion. Les clients d'ABEAS Corp sont de grandes compagnies qui louent l'avion pour augmenter leur capacité à l'occasion.
+	coffee lags-answers.coffee 6
 
-Les clients envoient des commandes de location qui consistent en un intervalle de temps, et le prix qu'ils sont prêts à payer pour louer l'avion durant cet intervalle.
+will output to stdout
 
-Les commandes de tous les clients sont connues à l'avance. Bien sûr, toutes les commandes ne pourront pas être honorées, et certaines devront être déclinées. Eugène LAWLER, le Chief Scientific Officer d'ABEAS Corp aimerait maximiser le profit de l'entreprise.
-
-On vous demande de calculer une solution optimale.
-
-Considérez par exemple le cas où la compagnie a 4 commandes :
-
-	AF514 : heure de départ 0, durée 5, prix 10
-	CO5 : heure de départ 3, durée 7, prix 14
-	AF515 : heure de départ 5, durée 9, prix 7
-	BA01 : heure de départ 6, durée 9, prix 8
-
-La solution optimale consiste à décliner CO5 et AF515, et le revenu est de 10+8=18. Remarquez qu'une solution à partir de AF514 et AF515 est faisable (l'avion serait loué sans interruption de 0 à 14) mais non-optimale.
-Entrée
-
-L'entrée consiste en plusieurs cas de test, chacun suivant la description ci-dessous. Une ligne vide sépare chaque cas de test.
-
-Chaque cas de test est décrit par un fichier contenant toutes les informations concernées : la première ligne contient le nombre n de commandes ( n <= 3000). Cette ligne est suivie de n lignes. Chacune de ces lignes décrit une commande et contient l'identifiant de la commande (moins de 80 caractères, sans espaces) suivie de trois valeurs entières : le temps de départ, la durée de la location et le prix que le client est prêt à payer pour cette commande (des espaces sont utilisés comme séparateurs). On suppose que les commandes ont une durée strictement positive. Vous pouvez supposer que les heures, durées et prix sont strictement inférieurs à 231.
-
-Sortie
-
-Pour chaque cas de test, il vous est demandé de calculer une solution optimale pour chaque fichier en entrée. Votre programme doit écrire le prix total payé par les compagnies.
-
-Les sorties de deux cas de tests consécutifs seront séparés par une ligne blanche.
-
-Exemple d'entrée
-
-	4
-	AF514 0 5 10
-	CO5 3 7 14
-	AF515 5 9 7
-	BA01 6 9 8
-Exemple de sortie
-
-	18
+	Generation of 15 Trips
+	   QUESTION   
+	[{"name":"tough-radar-52","start":0,"length":4,"price":10},{"name":"cooperative-kindergarten-1","start":1,"length":2,"price":5},{"name":"cloudy-wax-80","start":2,"length":6,"price":5},{"name":"splendid-scoreboard-61","start":4,"length":5,"price":15},{"name":"cooperative-newscaster-86","start":5,"length":2,"price":30},{"name":"selfish-buggy-57","start":5,"length":4,"price":10},{"name":"adventurous-hyacinth-38","start":6,"length":2,"price":2},{"name":"wide-racketeering-8","start":7,"length":6,"price":6},{"name":"joyous-cervix-14","start":9,"length":5,"price":9},{"name":"strange-squadron-85","start":10,"length":2,"price":14},{"name":"soft-seesaw-9","start":10,"length":4,"price":12},{"name":"gifted-rigging-66","start":11,"length":2,"price":1},{"name":"nervous-wintergreen-91","start":12,"length":6,"price":7},{"name":"gigantic-crossbones-77","start":14,"length":5,"price":11},{"name":"frightened-jock-1","start":15,"length":2,"price":6}]
+	   ANSWER   
+	65
+	compute: 3ms
 
 
 
+#### lags-test
 
+#### goal
+unit test for lags.coffee
+
+#### usage
+
+	mocha --compilers coffee:coffee-script lags-test.coffee
+
+#### output
+
+	  ․․․․․․․․․․․․․․․․․
+	
+	  ✔ 17 tests complete (3 ms)
+	
