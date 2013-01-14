@@ -10,7 +10,7 @@ for login in $(./scripts/logins.sh); do
 
 	if [ -e ./logins/$login/email ]; then
 		email=`cat ./logins/$login/email`
-		hash=`echo $email | md5sum | sed  's/[\w -]*//g'`
+		hash=`echo -n $email | md5sum | sed  's/[\w -]*//g'`
 		gravatar="http://www.gravatar.com/avatar/$hash/?s=64"
 		
 		echo "{\"name\":\"$login\",\"level\":$level,\"time\":\"$time\",\"gravatar\":\"$gravatar\"},"
