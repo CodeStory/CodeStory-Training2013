@@ -25,7 +25,7 @@ public class Main {
       String gravatar = null;
       if (new File(file, "email").exists()) {
         String email = Files.readFirstLine(new File(file, "email"), Charsets.UTF_8);
-        String hash = Hashing.md5().hashString(email).toString();
+        String hash = Hashing.md5().hashString(email, Charsets.UTF_8).toString();
         gravatar = "http://www.gravatar.com/avatar/" + hash + "/?s=64";
       }
 
