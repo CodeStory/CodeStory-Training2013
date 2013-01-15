@@ -3,6 +3,7 @@ import com.google.common.io.Files;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -84,6 +85,6 @@ public class TripTest {
 
   @Test
   public void should_read_trip10000() throws IOException {
-    assertThat(new Trip(FlightsForJson.forJson(Files.toString(new File("trip10000.txt"), Charsets.UTF_8))).gain()).isEqualTo(192602);
+    assertThat(new Trip(FlightsForJson.forJson(new FileReader(new File("trip10000.txt")))).gain()).isEqualTo(192602);
   }
 }

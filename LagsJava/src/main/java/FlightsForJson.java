@@ -2,10 +2,11 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.internal.StringMap;
 
+import java.io.Reader;
 import java.util.List;
 
 public class FlightsForJson {
-  public static Flight[] forJson(String json) {
+  public static Flight[] forJson(Reader json) {
     List<Flight> flights = Lists.newArrayList();
 
     for (StringMap map : (List<StringMap>) new Gson().fromJson(json, List.class)) {

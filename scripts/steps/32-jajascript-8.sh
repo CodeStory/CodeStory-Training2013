@@ -14,13 +14,13 @@ if [ ! -s "logins/$LOGIN/jajascript-8" ]; then
 	echo "POST jajascript-8 for $LOGIN"
 	
 	MAX=0
-	for COUNT in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 30 50 100 200 300 400 500 600 700 800; do
+	for COUNT in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 30 50 100 200 300 400 500 600 700 800 1000 2000 10000 100000; do
 		echo $COUNT
 		cd lags
 		JSON=$(coffee simple-generator.coffee $COUNT)
 		cd ..
 		
-		EXPECTED_GAIN=$(java -cp scripts/lags.jar Main $JSON)
+		EXPECTED_GAIN=$(echo $JSON | java -cp scripts/lags.jar Main)
 	
 		SERVER=$(cat logins/$LOGIN/server)
 		URL="${SERVER}jajascript/optimize"
