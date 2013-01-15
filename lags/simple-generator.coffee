@@ -1,7 +1,5 @@
 gen = require './lags-gen.coffee'
 
-
-
 if process.argv[2]?
 	iteration = process.argv[2]
 else

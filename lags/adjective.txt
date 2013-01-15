@@ -5,7 +5,7 @@ alert
 attractive
 average
 beautiful
-blue-eyed 
+blue-eyed
 bloody
 blushing
 bright
@@ -124,7 +124,8 @@ clumsy
 combative
 condemned
 confused
-crazy, flipped-out
+crazy
+flipped-out
 creepy
 cruel
 dangerous
@@ -155,7 +156,7 @@ jittery
 lazy
 lonely
 mysterious
-nasty 
+nasty
 naughty
 nervous
 nutty
