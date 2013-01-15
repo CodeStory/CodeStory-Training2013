@@ -9,9 +9,9 @@ public class FlightsForJson {
     List<Flight> flights = Lists.newArrayList();
 
     for (StringMap map : (List<StringMap>) new Gson().fromJson(json, List.class)) {
-      int takeOff = ((Number) map.get("start")).intValue();
-      int landing = takeOff + ((Number) map.get("length")).intValue();
-      int gain = ((Number) map.get("price")).intValue();
+      int takeOff = ((Number) map.get("DEPART")).intValue();
+      int landing = takeOff + ((Number) map.get("DUREE")).intValue();
+      int gain = ((Number) map.get("PRIX")).intValue();
 
       flights.add(new Flight(takeOff, landing, gain));
     }

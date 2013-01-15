@@ -17,10 +17,10 @@ class Words
 		@lines[random(@lines.length)]
 
 class TripDescription
-	constructor: (@name, @start, @length, @price) ->
+	constructor: (@VOL, @DEPART, @DUREE, @PRIX) ->
 
 	toString: () ->
-		"#{@name} #{@start} #{@length} #{@price}"
+		"#{@VOL} #{@DEPART} #{@DUREE} #{@PRIX}"
 
 adjectives = new Words 'adjective.txt'
 nouns = new Words 'noun.txt'
