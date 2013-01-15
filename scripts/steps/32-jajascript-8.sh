@@ -13,27 +13,32 @@ fi
 if [ ! -s "logins/$LOGIN/jajascript-8" ]; then
 	echo "POST jajascript-8 for $LOGIN"
 	
-	cd lags
-	JSON=$(coffee simple-generator.coffee 4)
-	cd ..
+	MAX=0
+	for COUNT in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
+		cd lags
+		JSON=$(coffee simple-generator.coffee $COUNT)
+		cd ..
+		
+		EXPECTED_GAIN=$(java -cp scripts/lags.jar Main $JSON)
 	
-	echo $JSON
+		SERVER=$(cat logins/$LOGIN/server)
+		URL="${SERVER}jajascript/optimize"
+	
+		RESPONSE=$(curl -m 30 --data-binary "$JSON" -Ls $URL)
+		if [ "$?" -ne 0 ]; then
+			break
+		fi
 
-	EXPECTED_GAIN=$(java -cp scripts/lags.jar Main $JSON)
-	echo Expected: $EXPECTED_GAIN
+		GAIN=$(echo $RESPONSE | coffee lags/stripgain.coffee 2>/dev/null)
+		if [[ $EXPECTED_GAIN != $GAIN ]]; then
+			break
+		fi
 
-	SERVER=$(cat logins/$LOGIN/server)
-	T="$(date +%s)"
-	URL="${SERVER}jajascript/optimize"
-	T="$(($(date +%s)-T))"
-	RESPONSE=$(curl --data-binary "$JSON" -Ls $URL)
-	echo Response: $RESPONSE
-	echo Time: $T
-	
-	GAIN=$(echo $RESPONSE | coffee lags/stripgain.coffee)
-	echo Actual: $GAIN
-	
-	if [[ $EXPECTED_GAIN == $GAIN ]]; then
-		echo $T > logins/$LOGIN/jajascript-8
+		MAX=$COUNT
+	done
+		
+	if [ "$MAX" -gt 0 ]; then
+		#echo MAX: $MAX
+		echo $MAX > logins/$LOGIN/jajascript-8
 	fi
 fi
