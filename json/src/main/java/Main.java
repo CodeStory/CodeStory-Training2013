@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Main {
   private static final PatternFilenameFilter STANDARD_FILES = new PatternFilenameFilter("[^\\.]+.*");
-  private static final SimpleDateFormat DATE = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.000'Z'");
+  private static final SimpleDateFormat DATE = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.000'Z'");
 
   public static void main(String[] args) throws Exception {
     List<Participant> participants = Lists.newArrayList();
