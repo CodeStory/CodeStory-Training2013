@@ -15,6 +15,7 @@ if [ ! -s "logins/$LOGIN/jajascript-8" ]; then
 	
 	MAX=0
 	for COUNT in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
+		echo $COUNT
 		cd lags
 		JSON=$(coffee simple-generator.coffee $COUNT)
 		cd ..
@@ -28,8 +29,10 @@ if [ ! -s "logins/$LOGIN/jajascript-8" ]; then
 		if [ "$?" -ne 0 ]; then
 			break
 		fi
+		echo $RESPONSE
 
 		GAIN=$(echo $RESPONSE | coffee lags/stripgain.coffee 2>/dev/null)
+		echo $GAIN
 		if [[ $EXPECTED_GAIN != $GAIN ]]; then
 			break
 		fi
