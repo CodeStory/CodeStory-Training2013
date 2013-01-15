@@ -1,6 +1,5 @@
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -79,8 +78,7 @@ public class TripTest {
   }
 
   @Test
-  @Ignore
   public void should_read_trip30() throws IOException {
-    assertThat(new Trip(Files.toString(new File("trip30.txt"), Charsets.UTF_8)).gain()).isEqualTo(262);
+    assertThat(new Trip(Files.toString(new File("trip30.txt"), Charsets.UTF_8)).gain()).isEqualTo(281);
   }
 }
