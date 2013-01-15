@@ -43,23 +43,17 @@ public class Trip {
   }
 
   public int gain() {
-    return gain(0);
-  }
-
-  private int gain(int index) {
-    if ((-1 == index) || (index >= flights.length)) {
+    int count = flights.length;
+    if (count == 0) {
       return 0;
     }
 
-    if (cache[index] != -1) {
-      return cache[index];
+    for (int i = count - 1; i >= 0; i--) {
+      int gainWithFlight = flights[i].gain + (-1 == nextCompat[i] ? 0 : cache[nextCompat[i]]);
+      int gainWithoutFlight = ((i + 1) < count) ? cache[i + 1] : 0;
+      cache[i] = Math.max(gainWithoutFlight, gainWithFlight);
     }
 
-    int gainWithFlight = flights[index].gain + gain(nextCompat[index]);
-    int gainWithoutFlight = gain(index + 1);
-
-    int max = Math.max(gainWithoutFlight, gainWithFlight);
-    cache[index] = max;
-    return max;
+    return cache[0];
   }
 }
