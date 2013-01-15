@@ -10,31 +10,30 @@ if [ ! -e "logins/$LOGIN/ndeloof" ]; then
 	exit 0
 fi
 
-if [ ! -e "logins/$LOGIN/beta" ]; then
-	exit 0
-fi
-
 if [ ! -s "logins/$LOGIN/jajascript-8" ]; then
 	echo "POST jajascript-8 for $LOGIN"
 	
 	cd lags
-	JSON=$(coffee simple-generator.coffee 8)
+	JSON=$(coffee simple-generator.coffee 4)
 	cd ..
 	
 	echo $JSON
 
 	EXPECTED_GAIN=$(java -cp scripts/lags.jar Main $JSON)
-	echo expected: $EXPECTED_GAIN
+	echo Expected: $EXPECTED_GAIN
 
 	SERVER=$(cat logins/$LOGIN/server)
+	T="$(date +%s)"
 	URL="${SERVER}jajascript/optimize"
+	T="$(($(date +%s)-T))"
 	RESPONSE=$(curl --data-binary "$JSON" -Ls $URL)
-	echo $RESPONSE
+	echo Response: $RESPONSE
+	echo Time: $T
 	
 	GAIN=$(echo $RESPONSE | coffee lags/stripgain.coffee)
-	echo $GAIN
+	echo Actual: $GAIN
 	
 	if [[ $EXPECTED_GAIN == $GAIN ]]; then
-		echo $RESPONSE > logins/$LOGIN/jajascript-8
+		echo $T > logins/$LOGIN/jajascript-8
 	fi
 fi
