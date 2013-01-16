@@ -21,6 +21,7 @@ if [ ! -s "logins/$LOGIN/jajascript-8" ]; then
 		cd ..
 		
 		EXPECTED_GAIN=$(echo $JSON | java -cp scripts/lags.jar Main)
+		echo $EXPECTED_GAIN
 	
 		SERVER=$(cat logins/$LOGIN/server)
 		URL="${SERVER}jajascript/optimize"
