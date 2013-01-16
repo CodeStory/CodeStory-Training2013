@@ -1,4 +1,3 @@
-
 class TripOptimizer
 	constructor : (lines) ->
 		@trips = (new Trip(line) for line in lines.split '\n')
@@ -20,7 +19,6 @@ class Trip
 
 	overlap : (trip) ->
 		@takeOffTime + @duration > trip.takeOffTime && trip.takeOffTime + trip.duration > @takeOffTime
-
 
 exports.Trip=Trip
 exports.TripOptimizer=TripOptimizer

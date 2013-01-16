@@ -1,10 +1,7 @@
 gen = require './lags-gen.coffee'
 
-if process.argv[2]?
-	iteration = process.argv[2]
-else
-	iteration = 3
+iteration = process.argv[2] || 3
 
 trips = []
 gen.generator iteration, 0, trips
-console.log JSON.stringify trips
+console.log JSON.stringify(trips, {}, ' ')
