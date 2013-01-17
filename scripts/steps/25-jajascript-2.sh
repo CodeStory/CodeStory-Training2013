@@ -17,7 +17,7 @@ if [ ! -s "logins/$LOGIN/jajascript-2" ]; then
 	URL="${SERVER}jajascript/optimize"
 	RESPONSE=$(curl --data-binary @enonces/jajascript/2.json -Ls $URL | tr -d '\n\r')
 	VALID=$(echo "$RESPONSE" | coffee lags/lags-validator.coffee 2)
-
+	
 	if [[ $VALID =~ ^OK$ ]]; then
 		echo $RESPONSE > logins/$LOGIN/jajascript-2
 	fi
