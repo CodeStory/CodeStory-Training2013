@@ -35,6 +35,7 @@ if [ ! -s "logins/$LOGIN/jajascript-8" ]; then
 		GAIN=$(echo $RESPONSE | coffee lags/stripgain.coffee 2>/dev/null)
 		echo $GAIN
 		if [[ $EXPECTED_GAIN != $GAIN ]]; then
+			MAX=0
 			break
 		fi
 
