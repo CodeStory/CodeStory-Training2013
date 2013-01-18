@@ -1,6 +1,11 @@
 stdin = process.openStdin()
 stdin.setEncoding 'utf8'
 
-stdin.on 'data', (json) ->
+json = ''
+
+stdin.on 'data', (part) ->
+	json += part
+	
+stdin.on 'end', () -> 
 	response = JSON.parse json
 	console.log response.gain
