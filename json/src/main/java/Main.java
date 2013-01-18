@@ -16,7 +16,7 @@ public class Main {
   public static void main(String[] args) throws Exception {
     List<Participant> participants = Lists.newArrayList();
 
-    int maxLevel = 1 + new File("scripts/steps").listFiles(STANDARD_FILES).length;
+    int maxLevel = 2 + new File("scripts/steps").listFiles(STANDARD_FILES).length;
 
     for (File file : new File("logins").listFiles(STANDARD_FILES)) {
       String login = file.getName();
