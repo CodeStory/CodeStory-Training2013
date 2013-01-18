@@ -35,7 +35,7 @@ public class Main {
         gravatar = "http://www.gravatar.com/avatar/" + hash + "?s=64";
       }
 
-      participants.add(new Participant(login, level, maxLevel, time, gravatar, perf, 20));
+      participants.add(new Participant(login, level, maxLevel, time, gravatar, perf, 10000));
     }
 
     String json = new GsonBuilder().setPrettyPrinting().create().toJson(participants);
