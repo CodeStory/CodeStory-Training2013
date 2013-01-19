@@ -26,7 +26,7 @@ if [ ! -s "logins/$LOGIN/jajascript-10k" ]; then
 		SERVER=$(cat logins/$LOGIN/server)
 		URL="${SERVER}jajascript/optimize"
 	
-		RESPONSE=$(echo $JSON | curl -m 30 --data-binary @- -Ls $URL)
+		RESPONSE=$(echo $JSON | curl -m 30 --data-binary @- -s $URL)
 		if [ "$?" -ne 0 ]; then
 			break
 		fi

@@ -12,13 +12,18 @@ fi
 
 if [ ! -s "logins/$LOGIN/jajascript-4" ]; then
 	echo "POST jajascript-4 for $LOGIN"
+	
+	JSON=$(cat enonces/jajascript/4.json)
+	
+	EXPECTED_GAIN=$(echo $JSON | java -cp scripts/lags.jar Main)
 
 	SERVER=$(cat logins/$LOGIN/server)
 	URL="${SERVER}jajascript/optimize"
-	RESPONSE=$(curl --data-binary @enonces/jajascript/4.json -Ls $URL)
-	VALID=$(echo "$RESPONSE" | coffee lags/lags-validator.coffee 4)
 
-	if [[ $VALID =~ ^OK$ ]]; then
+	RESPONSE=$(echo $JSON | curl --data-binary @- -s $URL)
+
+	GAIN=$(echo $RESPONSE | coffee lags/stripgain.coffee 2>/dev/null)
+	if [ $EXPECTED_GAIN -eq $GAIN ]; then
 		echo $RESPONSE > logins/$LOGIN/jajascript-4
 	fi
 fi
