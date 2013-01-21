@@ -4,38 +4,60 @@ import org.junit.Test;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.SortedSet;
+import java.util.Date;
 
-import static codestory.test.Assertions.assertThat;
-import static java.util.Arrays.asList;
+import static org.fest.assertions.Assertions.assertThat;
 import static org.fest.assertions.MapAssert.entry;
 
 public class GraphGeneratorTest {
 
     @Test
-    public void should_get_scores_sorted_by_descending_score() throws Exception {
-        final SortedMap<Integer, SortedSet<String>> scores = new GraphGenerator().getScores(directory("tree"));
+    public void should_update_scores() throws Exception {
+        final Date date = new Date();
 
-        assertThat(scores).isEqualToSorted(entry(2, asList("login1")), entry(0, asList("login2")));
+        final Logins logins = new GraphGenerator().update(date, directory("tree")).logins();
+
+        assertThat(logins).containsOnly(new Login("login1"), new Login("login2"));
+
+        assertThat(logins.login("login1").score()).isEqualTo(2);
+        assertThat(logins.login("login1").scores()).hasSize(1).includes(entry(date, 2));
+
+        assertThat(logins.login("login2").score()).isEqualTo(0);
+        assertThat(logins.login("login2").scores()).hasSize(1).includes(entry(date, 0));
     }
 
     @Test
     public void should_get_same_scores() throws Exception {
-        final SortedMap<Integer, SortedSet<String>> scores = new GraphGenerator().getScores(directory("tree-with-same-score"));
+        final Date date = new Date();
 
-        for (Map.Entry<Integer, SortedSet<String>> loginNamesByScores : scores.entrySet()) {
-            StringBuilder loginNames = new StringBuilder();
-            for (String loginName : loginNamesByScores.getValue()) {
-                if (loginNames.length() > 0) {
-                    loginNames.append(", ");
-                }
-                loginNames.append(loginName);
-            }
-        }
+        final Logins logins = new GraphGenerator().update(date, directory("tree-with-same-score")).logins();
 
-        assertThat(scores).isEqualToSorted(entry(1, asList("login1", "login2")));
+        assertThat(logins).containsOnly(new Login("login1"), new Login("login2"));
+
+        assertThat(logins.login("login1").score()).isEqualTo(1);
+        assertThat(logins.login("login1").scores()).hasSize(1).includes(entry(date, 1));
+
+        assertThat(logins.login("login2").score()).isEqualTo(1);
+        assertThat(logins.login("login2").scores()).hasSize(1).includes(entry(date, 1));
+    }
+
+    @Test
+    public void should_update_twice() throws Exception {
+        final Date date1 = new Date();
+        final Date date2 = new Date(date1.getTime() + 1000);
+
+        final Logins logins = new GraphGenerator()
+                .update(date1, directory("tree-with-same-score"))
+                .update(date2, directory("tree"))
+                .logins();
+
+        assertThat(logins).containsOnly(new Login("login1"), new Login("login2"));
+
+        assertThat(logins.login("login1").score()).isEqualTo(2);
+        assertThat(logins.login("login1").scores()).hasSize(2).includes(entry(date1, 1), entry(date2, 2));
+
+        assertThat(logins.login("login2").score()).isEqualTo(0);
+        assertThat(logins.login("login2").scores()).hasSize(2).includes(entry(date1, 1), entry(date2, 0));
     }
 
     private static File directory(final String directoryName) throws URISyntaxException {

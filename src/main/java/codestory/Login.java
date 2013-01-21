@@ -4,12 +4,17 @@ import java.util.Date;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import static java.util.Collections.unmodifiableSortedMap;
+
 class Login {
 
     private final String name;
     private final SortedMap<Date, Integer> scores;
 
     Login(final String name) {
+        if (name == null) {
+            throw new IllegalArgumentException();
+        }
         this.name = name;
         this.scores = new TreeMap<>();
     }
@@ -26,12 +31,22 @@ class Login {
         return scores.get(scores.lastKey());
     }
 
+    SortedMap<Date, Integer> scores() {
+        return unmodifiableSortedMap(scores);
+    }
+
     Login setScore(final Date date, final Integer score) {
-        if (scores.containsKey(date)) {
-            scores.put(date, scores.get(date) + score);
-        } else {
-            scores.put(date, score);
-        }
+        scores.put(date, score);
         return this;
+    }
+
+    @Override
+    public boolean equals(final Object login) {
+        return this == login || login instanceof Login && name.equals(((Login) login).name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }

@@ -8,41 +8,38 @@ import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import static java.io.File.separator;
 import static java.io.File.separatorChar;
 import static java.lang.String.format;
 import static java.lang.System.exit;
-import static java.util.Collections.unmodifiableSortedMap;
 
 public class GraphGenerator {
 
-    public SortedMap<Integer, SortedSet<String>> getScores(final File directory) {
-        final Steps steps = new Steps(new File(directory, "scripts" + separatorChar + "steps"));
-        final Logins logins = new Logins().update(new Date(), new File(directory, "logins"), steps);
+    private final Logins logins = new Logins();
 
-        final SortedMap<Integer, SortedSet<String>> scores =
-                new TreeMap<Integer, SortedSet<String>>((score1, score2) -> Integer.compare(score2, score1));
-
-        for (final Login login : logins) {
-            if (!scores.containsKey(login.score())) {
-                scores.put(login.score(), new TreeSet<>());
-            }
-            scores.get(login.score()).add(login.name());
-        }
-
-        return unmodifiableSortedMap(scores);
+    public Logins logins() {
+        return logins;
     }
 
-    public Set<String> commits(final File gitDir) {
-        final LinkedHashSet<String> commits = new LinkedHashSet<>();
+    public GraphGenerator update(final Date date, final File directory) {
+        final Steps steps = new Steps(new File(directory, "scripts" + separatorChar + "steps"));
+        logins.update(date, new File(directory, "logins"), steps);
+        return this;
+    }
+
+    public SortedMap<Date, String> commitIdsByDate(final File gitDir) {
+        final SortedMap<Date, String> commits = new TreeMap<>();
         final Repository repository;
         try {
             repository = new RepositoryBuilder().setGitDir(gitDir).findGitDir().setMustExist(true).build();
             final Git git = new Git(repository);
             for (RevCommit revCommit : git.log().call()) {
-                commits.add(revCommit.getId().name());
+                commits.put(new Date((long) revCommit.getCommitTime() * 1000), revCommit.getId().name());
             }
         } catch (IOException | GitAPIException e) {
             e.printStackTrace();
@@ -50,7 +47,7 @@ public class GraphGenerator {
         return commits;
     }
 
-    public static void main(String... args) {
+    public static void main(final String... args) {
         if (args.length != 1) {
             System.err.println("usage: java " + GraphGenerator.class.getCanonicalName() + " <directory>");
             exit(1);
@@ -60,13 +57,47 @@ public class GraphGenerator {
         final GraphGenerator graphGenerator = new GraphGenerator();
 
         System.out.println("cd " + directory.getAbsolutePath());
-        for (String commit : graphGenerator.commits(new File(args[0] + separator + ".git"))) {
-            System.out.println("git reset --hard " + commit);
-            for (final Map.Entry<Integer, SortedSet<String>> loginsByScores : graphGenerator.getScores(directory).entrySet()) {
-                System.out.println(format("%3d %s", loginsByScores.getKey(), loginsByScores.getValue()));
-            }
-            System.out.println();
+        for (final Map.Entry<Date, String> commitByDate :
+                graphGenerator.commitIdsByDate(new File(args[0] + separator + ".git")).entrySet()) {
+            System.out.println("git reset --hard " + commitByDate.getValue());
+            graphGenerator.update(commitByDate.getKey(), directory);
         }
+
+        final StringBuilder json = new StringBuilder();
+        for (final Login login : graphGenerator.logins) {
+            generateGraphEntry(json, login);
+        }
+
+        if (json.length() > 2) {
+            json.deleteCharAt(json.length() - 2);
+        }
+
+        System.out.println(json.toString());
+    }
+
+    private static StringBuilder generateGraphEntry(final StringBuilder json, final Login login) {
+        Integer previousScore = -1;
+
+        json.append("{\n");
+        json.append(format("    name: '%s',\n", login.name()));
+        json.append("    data: [\n");
+
+        for (final Map.Entry<Date, Integer> score : login.scores().entrySet()) {
+            if (previousScore.equals(score.getValue())) {
+                continue;
+            }
+            json.append(format("        [Date.UTC(%tY, %<tm, %<te, %<tk, %<tM, %<tS), %d],\n", score.getKey(), score.getValue()));
+            previousScore = score.getValue();
+        }
+
+        if (!previousScore.equals(-1)) {
+            json.deleteCharAt(json.length() - 2);
+        }
+
+        json.append("    ]\n");
+        json.append("},\n");
+
+        return json;
     }
 
 }
