@@ -23,7 +23,7 @@ if [ ! -s "logins/$LOGIN/jajascript-6" ]; then
 	RESPONSE=$(echo $JSON | curl --data-binary @- -s $URL)
 
 	GAIN=$(echo $RESPONSE | coffee lags/stripgain.coffee 2>/dev/null)
-	if [ $EXPECTED_GAIN -eq $GAIN ]; then
+	if [[ $EXPECTED_GAIN == $GAIN ]]; then
 		echo $RESPONSE > logins/$LOGIN/jajascript-6
 	fi
 fi
