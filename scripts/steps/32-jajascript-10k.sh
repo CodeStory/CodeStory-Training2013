@@ -41,7 +41,7 @@ if [ ! -s "logins/$LOGIN/jajascript-10k" ]; then
 		MAX=$COUNT
 	done
 		
-	if [[ "$MAX" -gt 0 ]; then
+	if [ "$MAX" -gt 0 ]; then
 		echo $MAX > logins/$LOGIN/jajascript-8
 	fi
 	if [[ $MAX == "10000" ]]; then
