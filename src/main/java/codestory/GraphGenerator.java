@@ -18,19 +18,18 @@ import static java.util.Collections.unmodifiableSortedMap;
 
 public class GraphGenerator {
 
-    public SortedMap<String, Integer> getScores(final File directory) {
+    public SortedMap<Integer, SortedSet<String>> getScores(final File directory) {
         final Steps steps = new Steps(new File(directory, "scripts" + separatorChar + "steps"));
         final Logins logins = new Logins().update(new Date(), new File(directory, "logins"), steps);
 
-        final SortedMap<String, Integer> scores = new TreeMap<String, Integer>((loginName1, loginName2) -> {
-            final Integer score1 = logins.login(loginName1).score();
-            final Integer score2 = logins.login(loginName2).score();
+        final SortedMap<Integer, SortedSet<String>> scores =
+                new TreeMap<Integer, SortedSet<String>>((score1, score2) -> Integer.compare(score2, score1));
 
-            return score2.compareTo(score1);
-        });
-
-        for (Login login : logins) {
-            scores.put(login.name(), login.score());
+        for (final Login login : logins) {
+            if (!scores.containsKey(login.score())) {
+                scores.put(login.score(), new TreeSet<>());
+            }
+            scores.get(login.score()).add(login.name());
         }
 
         return unmodifiableSortedMap(scores);
@@ -63,8 +62,8 @@ public class GraphGenerator {
         System.out.println("cd " + directory.getAbsolutePath());
         for (String commit : graphGenerator.commits(new File(args[0] + separator + ".git"))) {
             System.out.println("git reset --hard " + commit);
-            for (final Map.Entry<String, Integer> scoreByLogins : graphGenerator.getScores(directory).entrySet()) {
-                System.out.println(format("%3d %s", scoreByLogins.getValue(), scoreByLogins.getKey()));
+            for (final Map.Entry<Integer, SortedSet<String>> loginsByScores : graphGenerator.getScores(directory).entrySet()) {
+                System.out.println(format("%3d %s", loginsByScores.getKey(), loginsByScores.getValue()));
             }
             System.out.println();
         }
