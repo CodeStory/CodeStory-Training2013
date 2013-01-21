@@ -3,26 +3,25 @@ package codestory;
 import java.io.File;
 import java.util.*;
 
-import static java.util.Arrays.asList;
+import static java.util.Collections.addAll;
 
 class Logins implements Iterable<Login> {
-
-    private final Map<Login, List<String>> stepsBylogins;
 
     private final Set<Login> logins;
 
     Logins() {
-        stepsBylogins = new HashMap<>();
         logins = new HashSet<>();
     }
 
     Logins update(final Date date, final File directory, final Steps steps) {
-        for (final File loginAsFile : directory.listFiles(pathname -> pathname.isDirectory())) {
+        final Map<Login, Set<String>> stepsBylogins = new HashMap<>();
+
+        for (final File loginAsFile : directory.listFiles(File::isDirectory)) {
             logins.add(new Login(loginAsFile.getName()));
-            stepsBylogins.put(login(loginAsFile.getName()), asList(loginAsFile.list()));
+            stepsBylogins.put(login(loginAsFile.getName()), asSet(loginAsFile.list()));
         }
 
-        for (final Map.Entry<Login, List<String>> stepsByLogin : stepsBylogins.entrySet()) {
+        for (final Map.Entry<Login, Set<String>> stepsByLogin : stepsBylogins.entrySet()) {
             Integer score = 0;
             for (final Step step : steps) {
                 if (stepsByLogin.getValue().contains(step.name())) {
@@ -47,6 +46,12 @@ class Logins implements Iterable<Login> {
     @Override
     public Iterator<Login> iterator() {
         return logins.iterator();
+    }
+
+    private static Set<String> asSet(String... strings) {
+        final HashSet<String> set = new HashSet<>(strings.length);
+        addAll(set, strings);
+        return set;
     }
 
 }
