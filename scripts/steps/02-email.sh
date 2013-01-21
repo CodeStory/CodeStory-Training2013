@@ -16,8 +16,8 @@ if [ ! -s "logins/$LOGIN/email" ]; then
 	SERVER=$(cat logins/$LOGIN/server)
 	URL=$SERVER?q=Quelle+est+ton+adresse+email
 	RESPONSE=$(curl -Ls "$URL" | tr -d '\n\r')
-
-	if [[ $RESPONSE =~ ([^@]+)@(.*)\.([a-zA-Z]+) ]]; then
+	
+	if [[ $RESPONSE =~ ^([^@]+)@(.*)\.([a-zA-Z]+)$ ]]; then
 		echo $RESPONSE > logins/$LOGIN/email
 	fi
 fi
