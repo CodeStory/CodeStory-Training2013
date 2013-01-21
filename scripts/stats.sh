@@ -3,7 +3,7 @@
 # Envoi des requetes aux participants
 #
 
-java -cp scripts/json.jar Main > ./code-story-status/data.json
+java -cp scripts/json.jar Main > ../code-story-status/data.json
 cd ../code-story-status
 git add -A
 git commit -am "MAJ"
