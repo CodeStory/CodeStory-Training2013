@@ -33,7 +33,6 @@ public class GraphGeneratorTest {
                 }
                 loginNames.append(loginName);
             }
-            System.out.println(loginNames + " has score " + loginNamesByScores.getKey());
         }
 
         assertThat(scores).isEqualToSorted(entry(1, asList("login1", "login2")));
