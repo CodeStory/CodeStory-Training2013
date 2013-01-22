@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Code Story Contest</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="http://code.highcharts.com/highcharts.js" type="text/javascript"></script>
+</head>
+<body>
+<script>
+    $(document).ready(function () {
+        var chart = new Highcharts.Chart({
+            chart: {
+                renderTo: 'container',
+                type: 'line'
+            },
+            title: {
+                text: 'Code Story Contest'
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: 'Score'
+                }
+            },
+            series: [
+{{{series}}}            ]
+        });
+
+        var _redraw = chart.redraw;
+        chart.redraw = function() { };
+
+        series = chart.series;
+        for (var i = 0; i < series.length; i++) {
+            series[i].hide();
+        }
+
+        chart.redraw = _redraw;
+        chart.redraw();
+    });
+</script>
+<div id="container"></div>
+</body>
+</html>
