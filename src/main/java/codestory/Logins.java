@@ -14,6 +14,10 @@ class Logins implements Iterable<Login> {
     }
 
     Logins update(final Date date, final File directory, final Steps steps) {
+        if (!directory.exists()) {
+            return this;
+        }
+
         final Map<Login, Set<String>> stepsBylogins = new HashMap<>();
 
         for (final File loginAsFile : directory.listFiles(File::isDirectory)) {

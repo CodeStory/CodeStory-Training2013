@@ -8,10 +8,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 import static java.io.File.separator;
 import static java.io.File.separatorChar;
@@ -47,19 +44,22 @@ public class GraphGenerator {
         return commits;
     }
 
-    public static void main(final String... args) {
+    public static void main(final String... args) throws IOException, InterruptedException {
         if (args.length != 1) {
             System.err.println("usage: java " + GraphGenerator.class.getCanonicalName() + " <directory>");
             exit(1);
         }
 
         final File directory = new File(args[0]);
+        final ProcessBuilder processBuilder = new ProcessBuilder().directory(directory.getAbsoluteFile());
         final GraphGenerator graphGenerator = new GraphGenerator();
 
-        System.out.println("cd " + directory.getAbsolutePath());
+        resetGitTo(processBuilder, "origin/master");
+
         for (final Map.Entry<Date, String> commitByDate :
                 graphGenerator.commitIdsByDate(new File(args[0] + separator + ".git")).entrySet()) {
-            System.out.println("git reset --hard " + commitByDate.getValue());
+            resetGitTo(processBuilder, commitByDate.getValue());
+
             graphGenerator.update(commitByDate.getKey(), directory);
         }
 
@@ -75,6 +75,16 @@ public class GraphGenerator {
         System.out.println(json.toString());
     }
 
+    private static void resetGitTo(final ProcessBuilder processBuilder, final String ref)
+            throws InterruptedException, IOException {
+        System.out.println("git reset --hard " + ref);
+        final int exitValue = processBuilder.command("git", "reset", "--hard", ref).start().waitFor();
+        if (exitValue != 0) {
+            System.err.println("error");
+            System.exit(exitValue);
+        }
+    }
+
     private static StringBuilder generateGraphEntry(final StringBuilder json, final Login login) {
         Integer previousScore = -1;
 
@@ -86,7 +96,10 @@ public class GraphGenerator {
             if (previousScore.equals(score.getValue())) {
                 continue;
             }
-            json.append(format("        [Date.UTC(%tY, %<tm, %<te, %<tk, %<tM, %<tS), %d],\n", score.getKey(), score.getValue()));
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTime(score.getKey());
+            json.append(format("        [Date.UTC(%tY, %d, %1$te, %<tk, %<tM, %<tS), %d],\n",
+                    calendar, calendar.get(Calendar.MONTH), score.getValue()));
             previousScore = score.getValue();
         }
 
