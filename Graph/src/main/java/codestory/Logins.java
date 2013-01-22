@@ -38,6 +38,27 @@ class Logins implements Iterable<Login> {
         return this;
     }
 
+    Logins keepOnlyExistingLogins(final File directory) {
+        if (!directory.exists()) {
+            return this;
+        }
+
+        System.err.println("logins.size " + logins.size());
+
+        final Set<Login> existingLogins = new HashSet<>();
+        for (final File loginAsFile : directory.listFiles(File::isDirectory)) {
+            if (contains(loginAsFile.getName())) {
+                existingLogins.add(login(loginAsFile.getName()));
+            }
+        }
+        logins.clear();
+        logins.addAll(existingLogins);
+
+        System.err.println("logins.size " + logins.size());
+
+        return this;
+    }
+
     Login login(final String loginName) {
         for (final Login login : logins) {
             if (login.name().equals(loginName)) {
@@ -45,6 +66,15 @@ class Logins implements Iterable<Login> {
             }
         }
         throw new NoSuchElementException();
+    }
+
+    private boolean contains(final String loginName) {
+        for (final Login login : logins) {
+            if (login.name().equals(loginName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -57,5 +87,4 @@ class Logins implements Iterable<Login> {
         addAll(set, strings);
         return set;
     }
-
 }

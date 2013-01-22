@@ -32,6 +32,11 @@ public class GraphGenerator {
         return this;
     }
 
+    private GraphGenerator keepOnlyExistingLogins(final File directory) {
+        logins.keepOnlyExistingLogins(new File(directory, "logins"));
+        return this;
+    }
+
     public SortedMap<Date, String> commitIdsByDate(final File gitDir) {
         final SortedMap<Date, String> commits = new TreeMap<>();
         final Repository repository;
@@ -84,6 +89,7 @@ public class GraphGenerator {
 
             graphGenerator.update(commitByDate.getKey(), directory);
         }
+        graphGenerator.keepOnlyExistingLogins(directory);
 
         final StringBuilder json = new StringBuilder();
         for (final Login login : graphGenerator.logins) {
