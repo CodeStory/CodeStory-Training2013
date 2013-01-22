@@ -11,13 +11,13 @@ class Step implements Comparable<Step> {
     private final Integer order;
     private final String name;
 
-    Step(final Integer order, final String name) {
+    Step(Integer order, String name) {
         this.order = order;
         this.name = name;
     }
 
-    Step(final File file) {
-        final Matcher orderAndNameExtractor = compile("(\\d+)-(.+)\\.sh").matcher(file.getName());
+    Step(File file) {
+        Matcher orderAndNameExtractor = compile("(\\d+)-(.+)\\.sh").matcher(file.getName());
         if (!orderAndNameExtractor.matches()) {
             throw new IllegalArgumentException();
         }
@@ -31,12 +31,12 @@ class Step implements Comparable<Step> {
     }
 
     @Override
-    public int compareTo(final Step otherStep) {
+    public int compareTo(Step otherStep) {
         return order.compareTo(otherStep.order);
     }
 
     @Override
-    public boolean equals(final Object otherStep) {
+    public boolean equals(Object otherStep) {
         if (this == otherStep) {
             return true;
         }
@@ -44,7 +44,7 @@ class Step implements Comparable<Step> {
             return false;
         }
 
-        final Step step = (Step) otherStep;
+        Step step = (Step) otherStep;
 
         return name.equals(step.name) && order.equals(step.order);
     }

@@ -9,19 +9,19 @@ class Steps implements Iterable<Step> {
 
     private final SortedSet<Step> steps;
 
-    Steps(final File directory) {
+    Steps(File directory) {
         steps = new TreeSet<>();
 
         if (!directory.exists()) {
             return;
         }
 
-        for (final File stepAsFile : directory.listFiles((dir, name) -> name.endsWith(".sh"))) {
+        for (File stepAsFile : directory.listFiles((dir, name) -> name.endsWith(".sh"))) {
             steps.add(new Step(stepAsFile));
         }
     }
 
-    Steps(final String... steps) {
+    Steps(String... steps) {
         this.steps = new TreeSet<>();
         for (Integer i = 0; i < steps.length; i++) {
             this.steps.add(new Step(i, steps[i]));

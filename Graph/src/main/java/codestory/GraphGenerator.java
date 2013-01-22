@@ -26,23 +26,23 @@ public class GraphGenerator {
         return logins;
     }
 
-    public GraphGenerator update(final Date date, final File directory) {
-        final Steps steps = new Steps(new File(directory, "scripts" + separatorChar + "steps"));
+    public GraphGenerator update(Date date, File directory) {
+        Steps steps = new Steps(new File(directory, "scripts" + separatorChar + "steps"));
         logins.update(date, new File(directory, "logins"), steps);
         return this;
     }
 
-    private GraphGenerator keepOnlyExistingLogins(final File directory) {
+    private GraphGenerator keepOnlyExistingLogins(File directory) {
         logins.keepOnlyExistingLogins(new File(directory, "logins"));
         return this;
     }
 
-    public SortedMap<Date, String> commitIdsByDate(final File gitDir) {
-        final SortedMap<Date, String> commits = new TreeMap<>();
-        final Repository repository;
+    public SortedMap<Date, String> commitIdsByDate(File gitDir) {
+        SortedMap<Date, String> commits = new TreeMap<>();
+        Repository repository;
         try {
             repository = new RepositoryBuilder().setGitDir(gitDir).findGitDir().setMustExist(true).build();
-            final Git git = new Git(repository);
+            Git git = new Git(repository);
             for (RevCommit revCommit : git.log().call()) {
                 commits.put(new Date((long) revCommit.getCommitTime() * 1000), revCommit.getId().name());
             }
@@ -52,38 +52,38 @@ public class GraphGenerator {
         return commits;
     }
 
-    public static void main(final String... args) throws IOException, InterruptedException {
+    public static void main(String... args) throws IOException, InterruptedException {
         if (args.length != 1) {
             System.err.println("usage: java " + GraphGenerator.class.getCanonicalName() +
                     " <directory> > codestorygraph.html");
             exit(1);
         }
 
-        final String directoryName = args[0];
+        String directoryName = args[0];
 
-        final Mustache mustache = new DefaultMustacheFactory().compile("codestorygraph.html");
-        final HashMap<String, String> series = new HashMap<>();
+        Mustache mustache = new DefaultMustacheFactory().compile("codestorygraph.html");
+        HashMap<String, String> series = new HashMap<>();
         series.put("series", generateSeries(directoryName));
         mustache.execute(new PrintWriter(System.out), series).flush();
     }
 
-    private static void resetGitTo(final ProcessBuilder processBuilder, final String ref)
+    private static void resetGitTo(ProcessBuilder processBuilder, String ref)
             throws InterruptedException, IOException {
-        final int exitValue = processBuilder.command("git", "reset", "--hard", ref).start().waitFor();
+        int exitValue = processBuilder.command("git", "reset", "--hard", ref).start().waitFor();
         if (exitValue != 0) {
             System.err.println("error");
             System.exit(exitValue);
         }
     }
 
-    private static String generateSeries(final String directoryName) throws InterruptedException, IOException {
-        final File directory = new File(directoryName);
-        final ProcessBuilder processBuilder = new ProcessBuilder().directory(directory.getAbsoluteFile());
-        final GraphGenerator graphGenerator = new GraphGenerator();
+    private static String generateSeries(String directoryName) throws InterruptedException, IOException {
+        File directory = new File(directoryName);
+        ProcessBuilder processBuilder = new ProcessBuilder().directory(directory.getAbsoluteFile());
+        GraphGenerator graphGenerator = new GraphGenerator();
 
         resetGitTo(processBuilder, "origin/master");
 
-        for (final Map.Entry<Date, String> commitByDate :
+        for (Map.Entry<Date, String> commitByDate :
                 graphGenerator.commitIdsByDate(new File(directoryName + separator + ".git")).entrySet()) {
             resetGitTo(processBuilder, commitByDate.getValue());
 
@@ -91,8 +91,8 @@ public class GraphGenerator {
         }
         graphGenerator.keepOnlyExistingLogins(directory);
 
-        final StringBuilder json = new StringBuilder();
-        for (final Login login : graphGenerator.logins) {
+        StringBuilder json = new StringBuilder();
+        for (Login login : graphGenerator.logins) {
             generateSerie(json, login);
         }
 
@@ -103,18 +103,18 @@ public class GraphGenerator {
         return json.toString();
     }
 
-    private static StringBuilder generateSerie(final StringBuilder json, final Login login) {
+    private static StringBuilder generateSerie(StringBuilder json, Login login) {
         Integer previousScore = -1;
 
         json.append("                {\n");
         json.append(format("                    name: '%s',\n", login.name()));
         json.append("                    data: [\n");
 
-        for (final Map.Entry<Date, Integer> score : login.scores().entrySet()) {
+        for (Map.Entry<Date, Integer> score : login.scores().entrySet()) {
             if (previousScore.equals(score.getValue())) {
                 continue;
             }
-            final Calendar calendar = Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
             calendar.setTime(score.getKey());
             json.append(format("                        [Date.UTC(%tY, %d, %1$te, %<tk, %<tM, %<tS), %d],\n",
                     calendar, calendar.get(Calendar.MONTH), score.getValue()));

@@ -12,7 +12,7 @@ public class LoginsTest {
 
     @Test
     public void should_compute_scores() throws Exception {
-        final Logins logins = new Logins().update(
+        Logins logins = new Logins().update(
                 new Date(),
                 new File(getClass().getResource(separator + "tree" + separator + "logins").toURI()),
                 new Steps("step1", "step2"));

@@ -11,7 +11,7 @@ class Login {
     private final String name;
     private final SortedMap<Date, Integer> scores;
 
-    Login(final String name) {
+    Login(String name) {
         if (name == null) {
             throw new IllegalArgumentException();
         }
@@ -35,13 +35,13 @@ class Login {
         return unmodifiableSortedMap(scores);
     }
 
-    Login setScore(final Date date, final Integer score) {
+    Login setScore(Date date, Integer score) {
         scores.put(date, score);
         return this;
     }
 
     @Override
-    public boolean equals(final Object login) {
+    public boolean equals(Object login) {
         return this == login || login instanceof Login && name.equals(((Login) login).name);
     }
 

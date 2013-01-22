@@ -13,21 +13,21 @@ class Logins implements Iterable<Login> {
         logins = new HashSet<>();
     }
 
-    Logins update(final Date date, final File directory, final Steps steps) {
+    Logins update(Date date, File directory, Steps steps) {
         if (!directory.exists()) {
             return this;
         }
 
-        final Map<Login, Set<String>> stepsBylogins = new HashMap<>();
+        Map<Login, Set<String>> stepsBylogins = new HashMap<>();
 
-        for (final File loginAsFile : directory.listFiles(File::isDirectory)) {
+        for (File loginAsFile : directory.listFiles(File::isDirectory)) {
             logins.add(new Login(loginAsFile.getName()));
             stepsBylogins.put(login(loginAsFile.getName()), asSet(loginAsFile.list()));
         }
 
-        for (final Map.Entry<Login, Set<String>> stepsByLogin : stepsBylogins.entrySet()) {
+        for (Map.Entry<Login, Set<String>> stepsByLogin : stepsBylogins.entrySet()) {
             Integer score = 0;
-            for (final Step step : steps) {
+            for (Step step : steps) {
                 if (stepsByLogin.getValue().contains(step.name())) {
                     score++;
                 }
@@ -38,15 +38,15 @@ class Logins implements Iterable<Login> {
         return this;
     }
 
-    Logins keepOnlyExistingLogins(final File directory) {
+    Logins keepOnlyExistingLogins(File directory) {
         if (!directory.exists()) {
             return this;
         }
 
         System.err.println("logins.size " + logins.size());
 
-        final Set<Login> existingLogins = new HashSet<>();
-        for (final File loginAsFile : directory.listFiles(File::isDirectory)) {
+        Set<Login> existingLogins = new HashSet<>();
+        for (File loginAsFile : directory.listFiles(File::isDirectory)) {
             if (contains(loginAsFile.getName())) {
                 existingLogins.add(login(loginAsFile.getName()));
             }
@@ -59,8 +59,8 @@ class Logins implements Iterable<Login> {
         return this;
     }
 
-    Login login(final String loginName) {
-        for (final Login login : logins) {
+    Login login(String loginName) {
+        for (Login login : logins) {
             if (login.name().equals(loginName)) {
                 return login;
             }
@@ -68,8 +68,8 @@ class Logins implements Iterable<Login> {
         throw new NoSuchElementException();
     }
 
-    private boolean contains(final String loginName) {
-        for (final Login login : logins) {
+    private boolean contains(String loginName) {
+        for (Login login : logins) {
             if (login.name().equals(loginName)) {
                 return true;
             }
@@ -83,7 +83,7 @@ class Logins implements Iterable<Login> {
     }
 
     private static Set<String> asSet(String... strings) {
-        final HashSet<String> set = new HashSet<>(strings.length);
+        HashSet<String> set = new HashSet<>(strings.length);
         addAll(set, strings);
         return set;
     }

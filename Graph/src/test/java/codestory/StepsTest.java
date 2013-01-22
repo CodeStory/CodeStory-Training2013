@@ -11,9 +11,9 @@ public class StepsTest {
 
     @Test
     public void should_get_correct_steps() throws Exception {
-        final String directoryName = separator + "tree" + separator + "scripts" + separator + "steps";
+        String directoryName = separator + "tree" + separator + "scripts" + separator + "steps";
 
-        final Steps steps = new Steps(new File(getClass().getResource(directoryName).toURI()));
+        Steps steps = new Steps(new File(getClass().getResource(directoryName).toURI()));
 
         assertThat(steps)
                 .hasSize(2)
