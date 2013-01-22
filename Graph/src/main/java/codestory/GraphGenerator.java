@@ -83,8 +83,6 @@ public class GraphGenerator {
             resetGitTo(processBuilder, commitByDate.getValue());
 
             graphGenerator.update(commitByDate.getKey(), directory);
-            if (commitByDate.getValue().equals("f1b0b62a3dc6da633b84f60f0fd5366e6fe2a115"))
-                break;
         }
 
         final StringBuilder json = new StringBuilder();
