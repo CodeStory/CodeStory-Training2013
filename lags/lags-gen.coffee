@@ -31,15 +31,18 @@ random = (number) ->
 randomPrice = (number) ->
 	random(number) + 1
 
+randomDuration = (number) ->
+	random(number)
+
 randomName = ->
 	"#{adjectives.random()}-#{nouns.random()}-#{randomPrice(99 )}"
 	
 do_generate = (seed, trips) ->
-	trips.push new TripDescription randomName(), seed + 0, 4, randomPrice(10) + 5
-	trips.push new TripDescription randomName(), seed + 1, 2, randomPrice(10)
-	trips.push new TripDescription randomName(), seed + 2, 6, randomPrice(7)
-	trips.push new TripDescription randomName(), seed + 4, 5, randomPrice(20) + 3
-	trips.push new TripDescription randomName(), seed + 5, 2, randomPrice(30)
+	trips.push new TripDescription randomName(), seed + randomDuration(5), 1 + randomDuration(10), randomPrice(30)
+	trips.push new TripDescription randomName(), seed + randomDuration(5), 1 + randomDuration(10), randomPrice(20) + 3
+	trips.push new TripDescription randomName(), seed + randomDuration(5), 1 + randomDuration(10), randomPrice(10)
+	trips.push new TripDescription randomName(), seed + randomDuration(5), 1 + randomDuration(10), randomPrice(10) + 5
+	trips.push new TripDescription randomName(), seed + randomDuration(5), 1 + randomDuration(20), randomPrice(7)
 
 generator = (number, seed, trips) ->
 	for n in [1..number]
