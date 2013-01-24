@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Main {
   private static final PatternFilenameFilter STANDARD_FILES = new PatternFilenameFilter("[^\\.]+.*");
-  private static final SimpleDateFormat DATE = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.000'Z'");
+  private static final SimpleDateFormat DATE = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.000");
 
   public static void main(String[] args) throws Exception {
     List<Participant> participants = Lists.newArrayList();
@@ -22,7 +22,7 @@ public class Main {
       String login = file.getName();
 
       int level = file.listFiles(STANDARD_FILES).length;
-      String time = DATE.format(file.lastModified());
+      String time = DATE.format(file.lastModified()) + "+0100";
       int perf = 0;
       if (new File(file, "jajascript-8").exists()) {
         perf = Integer.parseInt(Files.readFirstLine(new File(file, "jajascript-8"), Charsets.UTF_8));
