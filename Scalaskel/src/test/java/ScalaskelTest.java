@@ -105,6 +105,25 @@ public class ScalaskelTest {
   }
 
   @Test
+  public void should_change_for_28_cents_without_json() {
+    List<List<Integer>> combinations = new ScalaskelJava8().combinations(28);
+
+    assertThat(combinations).containsOnly(
+      coins(21, 7),
+      coins(21, 1, 1, 1, 1, 1, 1, 1),
+      coins(11, 11, 1, 1, 1, 1, 1, 1),
+      coins(11, 7, 7, 1, 1, 1),
+      coins(11, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+      coins(11, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+      coins(7, 7, 7, 7),
+      coins(7, 7, 7, 1, 1, 1, 1, 1, 1, 1),
+      coins(7, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+      coins(7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+      coins(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+    );
+  }
+
+  @Test
   public void should_change_for_42_cents() {
     List<List<Integer>> combinations = toCombinations(scalaskel.json(42));
 
@@ -116,6 +135,13 @@ public class ScalaskelTest {
     List<List<Integer>> combinations = toCombinations(scalaskel.json(97));
 
     assertThat(combinations).isNotEmpty();
+  }
+
+  @Test
+  public void should_change_for_550_cents() {
+    List<List<Integer>> combinations = new ScalaskelJava8().combinations(550);
+
+    assertThat(combinations).hasSize(19080);
   }
 
   static List<Integer> coins(int... coins) {
