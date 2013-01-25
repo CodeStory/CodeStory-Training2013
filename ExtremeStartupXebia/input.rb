@@ -6,4 +6,7 @@ if ARGV[0] == 'FeetToMetersQuestion'
 elsif ARGV[0] == 'PiQuestion'
   pi_question = ExtremeStartup::PiQuestion.new()
   puts(pi_question.n1)
+elsif ARGV[0] == 'GeneralKnowledgeQuestion'
+  general_knowledge_question = ExtremeStartup::GeneralKnowledgeQuestion.new()
+  puts(general_knowledge_question.n1)
 end

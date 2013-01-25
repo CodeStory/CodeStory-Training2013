@@ -6,6 +6,9 @@ if ARGV[0] == 'FeetToMetersQuestion'
 elsif ARGV[0] == 'PiQuestion'
   pi_question = ExtremeStartup::PiQuestion.new(Integer(ARGV[1]))
   exit(pi_question.answered_correctly?(ARGV[2]) ? 0 : 1)
+elsif ARGV[0] == 'GeneralKnowledgeQuestion'
+  general_knowledge_question = ExtremeStartup::GeneralKnowledgeQuestion.new(Integer(ARGV[1]))
+  exit(general_knowledge_question.answered_correctly?(ARGV[2]) ? 0 : 1)
 end
 
 exit(1)

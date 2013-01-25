@@ -2,7 +2,7 @@ module ExtremeStartup
 
   class Question
     def answered_correctly?(answer)
-      correct_answer.to_s.downcase.strip == answer
+      correct_answer.to_s.downcase.strip == answer.downcase.strip
     end
   end
 
@@ -56,6 +56,39 @@ module ExtremeStartup
         return "rd"
       end
       "th"
+    end
+  end
+
+  class GeneralKnowledgeQuestion < Question
+    class << self
+      def question_bank
+        [
+            ["who+counted+to+infinity+twice", "Chuck Norris"],
+            ["what+is+the+answer+to+life%2C+the+universe+and+everything", "42"],
+            ["who+said+%27Luke%2C+I+am+your+father%27", "Darth Vader"],
+            ["what+does+%27RTFM%27+stand+for", "Read The Fucking Manual"],
+            ["in+which+language+was+the+first+%27hello%2C+world%27+written", "C"],
+        ]
+      end
+    end
+
+    def initialize(questionNumber = rand(5))
+      @questionNumber = questionNumber
+      question = GeneralKnowledgeQuestion.question_bank[@questionNumber]
+      @question = question[0]
+      @correct_answer = question[1]
+    end
+
+    def n1
+      @questionNumber
+    end
+
+    def as_text
+      @question
+    end
+
+    def correct_answer
+      @correct_answer
     end
   end
 
