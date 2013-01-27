@@ -1,7 +1,5 @@
 package codestory;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import com.github.mustachejava.Mustache;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
@@ -10,7 +8,6 @@ import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.*;
 
 import static java.io.File.separator;
@@ -55,16 +52,11 @@ public class GraphGenerator {
     public static void main(String... args) throws IOException, InterruptedException {
         if (args.length != 1) {
             System.err.println("usage: java " + GraphGenerator.class.getCanonicalName() +
-                    " <directory> > codestorygraph.html");
+                    " <directory> > scores-timeseries.json");
             exit(1);
         }
 
-        String directoryName = args[0];
-
-        Mustache mustache = new DefaultMustacheFactory().compile("codestorygraph.html");
-        HashMap<String, String> series = new HashMap<>();
-        series.put("series", generateSeries(directoryName));
-        mustache.execute(new PrintWriter(System.out), series).flush();
+        System.out.println(generateSeries(args[0]));
     }
 
     private static void resetGitTo(ProcessBuilder processBuilder, String ref)
@@ -92,6 +84,8 @@ public class GraphGenerator {
         graphGenerator.keepOnlyExistingLogins(directory);
 
         StringBuilder json = new StringBuilder();
+        json.append("[\n");
+
         for (Login login : graphGenerator.logins) {
             generateSerie(json, login);
         }
@@ -100,15 +94,17 @@ public class GraphGenerator {
             json.deleteCharAt(json.length() - 2);
         }
 
+        json.append("]\n");
+
         return json.toString();
     }
 
     private static StringBuilder generateSerie(StringBuilder json, Login login) {
         Integer previousScore = -1;
 
-        json.append("                {\n");
-        json.append(format("                    name: '%s',\n", login.name()));
-        json.append("                    data: [\n");
+        json.append("    {\n");
+        json.append(format("        \"name\": \"%s\",\n", login.name().replaceAll("\"", "\\\"")));
+        json.append("        \"data\": [\n");
 
         for (Map.Entry<Date, Integer> score : login.scores().entrySet()) {
             if (previousScore.equals(score.getValue())) {
@@ -116,8 +112,7 @@ public class GraphGenerator {
             }
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(score.getKey());
-            json.append(format("                        [Date.UTC(%tY, %d, %1$te, %<tk, %<tM, %<tS), %d],\n",
-                    calendar, calendar.get(Calendar.MONTH), score.getValue()));
+            json.append(format("            [%tQ, %d],\n", calendar, score.getValue()));
             previousScore = score.getValue();
         }
 
@@ -125,8 +120,8 @@ public class GraphGenerator {
             json.deleteCharAt(json.length() - 2);
         }
 
-        json.append("                    ]\n");
-        json.append("                },\n");
+        json.append("        ]\n");
+        json.append("    },\n");
 
         return json;
     }
