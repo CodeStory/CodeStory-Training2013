@@ -7,10 +7,19 @@ import static java.util.Collections.addAll;
 
 class Logins implements Iterable<Login> {
 
-    private final Set<Login> logins;
+    private final Set<Login> logins = new HashSet<>();
 
-    Logins() {
-        logins = new HashSet<>();
+    public Logins() {
+    }
+
+    Logins(ScoresTimeserie[] scoresTimeseries) {
+        for (ScoresTimeserie scoresTimeserie : scoresTimeseries) {
+            Login login = new Login(scoresTimeserie.name);
+            for (Long[] scoreAtDate : scoresTimeserie.data) {
+                login.setScore(new Date(scoreAtDate[0]), scoreAtDate[1].intValue());
+            }
+            logins.add(login);
+        }
     }
 
     Logins update(Date date, File directory, Steps steps) {

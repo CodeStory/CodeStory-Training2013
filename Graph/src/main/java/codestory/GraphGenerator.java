@@ -1,5 +1,6 @@
 package codestory;
 
+import com.google.gson.Gson;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Repository;
@@ -8,6 +9,8 @@ import org.eclipse.jgit.revwalk.RevCommit;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 
 import static java.io.File.separator;
@@ -17,7 +20,18 @@ import static java.lang.System.exit;
 
 public class GraphGenerator {
 
-    private final Logins logins = new Logins();
+    private final Logins logins;
+
+    GraphGenerator(InputStream in) throws IOException {
+        try (InputStreamReader inputStreamReader = new InputStreamReader(in)) {
+            ScoresTimeserie[] scoresTimeseries = new Gson().fromJson(inputStreamReader, ScoresTimeserie[].class);
+            logins = new Logins(scoresTimeseries);
+        }
+    }
+
+    public GraphGenerator() {
+        logins = new Logins();
+    }
 
     public Logins logins() {
         return logins;
@@ -50,13 +64,13 @@ public class GraphGenerator {
     }
 
     public static void main(String... args) throws IOException, InterruptedException {
-        if (args.length != 1) {
+        if (args.length != 2) {
             System.err.println("usage: java " + GraphGenerator.class.getCanonicalName() +
-                    " <directory> > scores-timeseries.json");
+                    " --[fromStart|onlyLast] <directory> [< old-scores-timeseries.json] > scores-timeseries-out.json");
             exit(1);
         }
 
-        System.out.println(generateSeries(args[0]));
+        System.out.println(generateSeries(args[0], args[1]));
     }
 
     private static void resetGitTo(ProcessBuilder processBuilder, String ref)
@@ -68,18 +82,26 @@ public class GraphGenerator {
         }
     }
 
-    private static String generateSeries(String directoryName) throws InterruptedException, IOException {
+    private static String generateSeries(String mode, String directoryName) throws InterruptedException, IOException {
         File directory = new File(directoryName);
         ProcessBuilder processBuilder = new ProcessBuilder().directory(directory.getAbsoluteFile());
-        GraphGenerator graphGenerator = new GraphGenerator();
+        GraphGenerator graphGenerator;
 
-        resetGitTo(processBuilder, "origin/master");
+        if ("--fromStart".equals(mode)) {
+            graphGenerator = new GraphGenerator();
+            resetGitTo(processBuilder, "origin/master");
 
-        for (Map.Entry<Date, String> commitByDate :
-                graphGenerator.commitIdsByDate(new File(directoryName + separator + ".git")).entrySet()) {
-            resetGitTo(processBuilder, commitByDate.getValue());
+            for (Map.Entry<Date, String> commitByDate :
+                    graphGenerator.commitIdsByDate(new File(directoryName + separator + ".git")).entrySet()) {
+                resetGitTo(processBuilder, commitByDate.getValue());
 
-            graphGenerator.update(commitByDate.getKey(), directory);
+                graphGenerator.update(commitByDate.getKey(), directory);
+            }
+        } else if ("--onlyLast".equals(mode)) {
+            graphGenerator = new GraphGenerator(System.in);
+            graphGenerator.update(new Date(), directory);
+        } else {
+            throw new IllegalArgumentException("'" + mode + "' is not handled (please use only --fromStart or --onlyLast)");
         }
         graphGenerator.keepOnlyExistingLogins(directory);
 

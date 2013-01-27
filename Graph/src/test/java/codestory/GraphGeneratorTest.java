@@ -60,6 +60,13 @@ public class GraphGeneratorTest {
         assertThat(logins.login("login2").scores()).hasSize(2).includes(entry(date1, 1), entry(date2, 0));
     }
 
+    @Test
+    public void should_load_timeseries_from_stream() throws Exception {
+        final GraphGenerator graphGenerator = new GraphGenerator(getClass().getResourceAsStream("/scoresTimeseries.json"));
+
+        assertThat(graphGenerator.logins()).hasSize(2);
+    }
+
     private static File directory(String directoryName) throws URISyntaxException {
         return new File(GraphGeneratorTest.class.getResource("/" + directoryName).toURI());
     }
