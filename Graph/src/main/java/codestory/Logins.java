@@ -43,8 +43,6 @@ class Logins implements Iterable<Login> {
             return this;
         }
 
-        System.err.println("logins.size " + logins.size());
-
         Set<Login> existingLogins = new HashSet<>();
         for (File loginAsFile : directory.listFiles(File::isDirectory)) {
             if (contains(loginAsFile.getName())) {
@@ -53,8 +51,6 @@ class Logins implements Iterable<Login> {
         }
         logins.clear();
         logins.addAll(existingLogins);
-
-        System.err.println("logins.size " + logins.size());
 
         return this;
     }
